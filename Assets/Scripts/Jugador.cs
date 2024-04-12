@@ -6,6 +6,7 @@ public class Jugador : MonoBehaviour
 {
     private Rigidbody rb;
     public float speed = 5f;
+    public float rotationSpeed = 5f;
     public float radioBusqueda = 5f; // Radio de búsqueda para encontrar bloques cercanos
     public Material colorBloqueCercano; // Material para el bloque más cercano
 
@@ -21,8 +22,13 @@ public class Jugador : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(moveHorizontal * speed, rb.velocity.y, moveVertical * speed);
-        rb.velocity = movement;
+        Vector3 movement = new Vector3(moveHorizontal ,0, moveVertical);
+        movement.Normalize();
+
+        transform.position = transform.position + movement * speed * Time.deltaTime;
+        if(movement!=Vector3.zero)transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movement),rotationSpeed * Time.deltaTime);
+
+
 
         // Encontrar todos los bloques dentro del radio de búsqueda
         Collider[] bloques = Physics.OverlapSphere(transform.position, radioBusqueda);
@@ -74,4 +80,5 @@ public class Jugador : MonoBehaviour
             }
         }
     }
+
 }
