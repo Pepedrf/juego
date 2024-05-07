@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Alvaro\\Desktop\\TFG2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EAC16DC1-76F3-E933-CCEA-283AFA6B93C2}|Assembly-CSharp.csproj|c:\\users\\alvaro\\desktop\\tfg2\\assets\\scripts\\temporizador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAC16DC1-76F3-E933-CCEA-283AFA6B93C2}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\temporizador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAC16DC1-76F3-E933-CCEA-283AFA6B93C2}|Assembly-CSharp.csproj|c:\\users\\alvaro\\desktop\\tfg2\\assets\\scripts\\cogerobjeto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAC16DC1-76F3-E933-CCEA-283AFA6B93C2}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cogerobjeto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Temporizador.cs",
+              "DocumentMoniker": "C:\\Users\\Alvaro\\Desktop\\TFG2\\Assets\\Scripts\\Temporizador.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Temporizador.cs",
+              "ToolTip": "C:\\Users\\Alvaro\\Desktop\\TFG2\\Assets\\Scripts\\Temporizador.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Temporizador.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAqwA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-07T18:10:10.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CogerObjeto.cs",
+              "DocumentMoniker": "C:\\Users\\Alvaro\\Desktop\\TFG2\\Assets\\Scripts\\CogerObjeto.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CogerObjeto.cs",
+              "ToolTip": "C:\\Users\\Alvaro\\Desktop\\TFG2\\Assets\\Scripts\\CogerObjeto.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CogerObjeto.cs",
+              "ViewState": "AQIAANQAAAAAAAAAAAAIwDgAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-07T18:00:52.498Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
