@@ -7,6 +7,9 @@ TagManager:
   - Bloque
   - Objeto
   - Cofre
+  - Cofre2
+  - Cofre3
+  - Cofre4
   layers:
   - Default
   - TransparentFX

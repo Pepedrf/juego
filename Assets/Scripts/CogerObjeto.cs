@@ -5,12 +5,22 @@ using UnityEngine;
 public class CogerObjeto : MonoBehaviour
 {
     public GameObject UbicacionCoger; // Objeto que hereda del brazo del jugador
+
     public GameObject procesadorPrefab; // Prefab del objeto "procesador"
+    public GameObject graficaPrefab; // Prefab del objeto "grafica"
+    public GameObject cajaPrefab; // Prefab del objeto "Caja"
+    public GameObject ramPrefab; // Prefab del objeto "Ram"
+
     public Vector3 armRotationOffset = new Vector3(-77f, 9f, -22f); // Ajuste de la rotación del brazo
     private GameObject pickedObject = null;
     private Transform dogArmRightTransform;
     private Quaternion originalArmLocalRotation; // Guardar la rotación local original del brazo
-    private bool nearChest = false; // Variable para verificar si el jugador está cerca de un cofre
+
+    private bool nearChest = false;
+    private bool nearChest2 = false;
+    private bool nearChest3 = false;
+    private bool nearChest4 = false;
+
     public float radioBusqueda = 5f; // Radio de búsqueda para encontrar bloques cercanos
     public Material colorBloqueCercano; // Material para el bloque más cercano
 
@@ -28,16 +38,40 @@ public class CogerObjeto : MonoBehaviour
 
     void Update()
     {
+        bloqueCercano();
+
         if (pickedObject != null)
         {
             if (Input.GetKey("r"))
             {
+                GameObject bloqueCercano = null; // Asignar un valor predeterminado a la variable
+
+                // Obtener el bloque más cercano
+                bloqueCercano = bloqueMasCercano();
+
                 // Restaurar la rotación local original del brazo
                 dogArmRightTransform.localRotation = originalArmLocalRotation;
 
-                pickedObject.GetComponent<Rigidbody>().useGravity = true;
-                pickedObject.GetComponent<Rigidbody>().isKinematic = false;
-                pickedObject.gameObject.transform.SetParent(null);
+                // Habilitar la gravedad y la física del objeto
+                Rigidbody pickedObjectRigidbody = pickedObject.GetComponent<Rigidbody>();
+                pickedObjectRigidbody.useGravity = true;
+                pickedObjectRigidbody.isKinematic = false;
+
+                // Si hay un bloque cercano, hacer que el objeto suelto sea hijo de ese bloque
+                if (bloqueCercano != null)
+                {
+                    pickedObject.transform.SetParent(bloqueCercano.transform);
+                    // Ajustar la posición del objeto
+                    Vector3 newPos = bloqueCercano.transform.position;
+                    newPos.y += 1;
+                    pickedObject.transform.position = newPos;
+                }
+                else
+                {
+                    // Si no hay un bloque cercano, soltar el objeto sin asignarle un padre
+                    pickedObject.transform.SetParent(null);
+                }
+
                 pickedObject = null;
             }
         }
@@ -49,7 +83,7 @@ public class CogerObjeto : MonoBehaviour
                 if (pickedObject == null && UbicacionCoger != null)
                 {
                     // Buscar objetos cercanos que se puedan recoger
-                    Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 0.7f); // Ajusta el radio según sea necesario
+                    Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1.5f); // Ajusta el radio según sea necesario
 
                     foreach (Collider col in nearbyObjects)
                     {
@@ -88,12 +122,74 @@ public class CogerObjeto : MonoBehaviour
                         pickedRigidbody.useGravity = false;
                         pickedRigidbody.isKinematic = true;
                     }
+
+                    // Si no se encontró ningún objeto cercano, instanciar uno nuevo en la UbicacionCoger
+                    else if (pickedObject == null && nearChest2)
+                    {
+                        pickedObject = Instantiate(graficaPrefab, UbicacionCoger.transform.position, Quaternion.identity);
+                        pickedObject.transform.SetParent(UbicacionCoger.transform);
+
+                        dogArmRightTransform.localRotation = Quaternion.Euler(armRotationOffset);
+
+                        Rigidbody pickedRigidbody = pickedObject.GetComponent<Rigidbody>();
+                        pickedRigidbody.useGravity = false;
+                        pickedRigidbody.isKinematic = true;
+                    }
+                    else if (pickedObject == null && nearChest3)
+                    {
+                        pickedObject = Instantiate(cajaPrefab, UbicacionCoger.transform.position, Quaternion.identity);
+                        pickedObject.transform.SetParent(UbicacionCoger.transform);
+
+                        dogArmRightTransform.localRotation = Quaternion.Euler(armRotationOffset);
+
+                        Rigidbody pickedRigidbody = pickedObject.GetComponent<Rigidbody>();
+                        pickedRigidbody.useGravity = false;
+                        pickedRigidbody.isKinematic = true;
+                    }
+                    else if (pickedObject == null && nearChest4)
+                    {
+                        pickedObject = Instantiate(ramPrefab, UbicacionCoger.transform.position, Quaternion.identity);
+                        pickedObject.transform.SetParent(UbicacionCoger.transform);
+
+                        dogArmRightTransform.localRotation = Quaternion.Euler(armRotationOffset);
+
+                        Rigidbody pickedRigidbody = pickedObject.GetComponent<Rigidbody>();
+                        pickedRigidbody.useGravity = false;
+                        pickedRigidbody.isKinematic = true;
+                    }
                 }
             }
 
         }
+    }
 
+    private GameObject bloqueMasCercano()
+    {
+        // Encontrar todos los bloques dentro del radio de búsqueda
+        Collider[] bloques = Physics.OverlapSphere(transform.position, radioBusqueda);
 
+        // Encontrar el bloque más cercano
+        float distanciaMinima = 2;
+        GameObject bloqueCercano = null;
+
+        foreach (Collider bloque in bloques)
+        {
+            if (bloque.CompareTag("Bloque"))
+            {
+                float distancia = Vector3.Distance(transform.position, bloque.transform.position);
+                if (distancia < distanciaMinima)
+                {
+                    distanciaMinima = distancia;
+                    bloqueCercano = bloque.gameObject;
+                }
+            }
+        }
+
+        return bloqueCercano;
+    }
+
+    private GameObject bloqueCercano()
+    {
         // Encontrar todos los bloques dentro del radio de búsqueda
         Collider[] bloques = Physics.OverlapSphere(transform.position, radioBusqueda);
 
@@ -113,6 +209,7 @@ public class CogerObjeto : MonoBehaviour
                 }
             }
         }
+
         // Cambiar el color del bloque más cercano si la distancia es menor que 1.5
         foreach (Collider bloque in bloques)
         {
@@ -121,7 +218,7 @@ public class CogerObjeto : MonoBehaviour
                 GameObject bloqueObjeto = bloque.gameObject;
                 Renderer renderer = bloqueObjeto.GetComponent<Renderer>();
 
-                if (bloqueObjeto == bloqueCercano && distanciaMinima < 1.5)
+                if (bloqueObjeto == bloqueCercano && distanciaMinima < 1.5f)
                 {
                     // Guardar el material original si no se ha guardado antes
                     if (!materialesOriginales.ContainsKey(bloqueObjeto))
@@ -142,14 +239,28 @@ public class CogerObjeto : MonoBehaviour
                 }
             }
         }
+
+        return bloqueCercano;
     }
 
-    //Funciones para comprobar si el jugador está o no cerca del cofre
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Cofre"))
         {
-            nearChest = true; // Establecer la variable a true si el jugador está cerca del cofre
+            nearChest = true;
+        }
+
+        if (other.CompareTag("Cofre2"))
+        {
+            nearChest2 = true;
+        }
+        if (other.CompareTag("Cofre3"))
+        {
+            nearChest3 = true;
+        }
+        if (other.CompareTag("Cofre4"))
+        {
+            nearChest4 = true;
         }
     }
 
@@ -157,7 +268,20 @@ public class CogerObjeto : MonoBehaviour
     {
         if (other.CompareTag("Cofre"))
         {
-            nearChest = false; // Establecer la variable a false cuando el jugador sale del área del cofre
+            nearChest = false;
+        }
+
+        if (other.CompareTag("Cofre2"))
+        {
+            nearChest2 = false;
+        }
+        if (other.CompareTag("Cofre3"))
+        {
+            nearChest3 = false;
+        }
+        if (other.CompareTag("Cofre4"))
+        {
+            nearChest4 = false;
         }
     }
 }
